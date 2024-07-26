@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
+import uvicorn
 import numpy as np
 import pandas as pd
 import joblib
@@ -8,8 +9,6 @@ app = FastAPI()
 
 # Load the pre-trained model
 model = joblib.load('regressor_model.pkl')
-scaler = joblib.load('scaler.pkl')
-
 class EmployeeData(BaseModel):
     Gender: int
     Age: int
@@ -22,7 +21,9 @@ def predict(data: EmployeeData):
         data.Gender, data.Age, data.PhD
     ]])
 
-    data_scaled = scaler.transform(input_data)
-
-    prediction = model.predict(data_scaled)
+    prediction = model.predict(input_data)
     return {'prediction': prediction[0]}
+
+
+if __name__ == '__main__':
+    uvicorn.run(app, host='127.0.0.1', port=8000)
