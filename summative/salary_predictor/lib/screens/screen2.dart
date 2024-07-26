@@ -13,32 +13,51 @@ class _Screen2State extends State<Screen2> {
   final TextEditingController phdController = TextEditingController();
   String salaryPrediction = "Value";
 
-  void predictSalary() async {
-    final response = await http.post(
-      Uri.parse(
-          'https://linear-regression-model-n8bu.onrender.com/predict'), // Ensure this URL is correct
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(<String, dynamic>{
-        'gender': int.parse(genderController.text),
-        'age': int.parse(ageController.text),
-        'phd': int.parse(phdController.text),
-      }),
-    );
+  Future<void> getPrediction(
+    int gender,
+    int age,
+    int phd,
+  ) async {
+    try {
+      // Make the request to the API, passing the parameters
+      http.Response response = await http.post(
+        Uri.parse(
+            'https://linear-regression-model-n8bu.onrender.com/predict'), // Ensure this URL is correct
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode({
+          'gender': gender,
+          'age': age,
+          'phd': phd,
+        }),
+      );
 
-    if (response.statusCode == 200) {
+      // Parse response from json
+      if (response.statusCode == 200) {
+        Map<String, dynamic> responseBody = jsonDecode(response.body);
+        setState(() {
+          salaryPrediction = responseBody['predicted_salary'].toString();
+        });
+      } else {
+        setState(() {
+          salaryPrediction = 'Error: ${response.statusCode}';
+        });
+        print('Failed to predict salary: ${response.statusCode}');
+      }
+    } catch (e) {
       setState(() {
-        salaryPrediction =
-            json.decode(response.body)['predicted_salary'].toString();
+        salaryPrediction = 'Error: $e';
       });
-    } else {
-      // Handling errors
-      setState(() {
-        salaryPrediction = 'Error: ${response.statusCode}';
-      });
-      print('Failed to predict salary: ${response.statusCode}');
+      print('Error: $e');
     }
+  }
+
+  void predictSalary() {
+    int gender = int.parse(genderController.text);
+    int age = int.parse(ageController.text);
+    int phd = int.parse(phdController.text);
+    getPrediction(gender, age, phd);
   }
 
   @override
