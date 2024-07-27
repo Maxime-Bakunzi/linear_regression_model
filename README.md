@@ -81,7 +81,7 @@ We use a Multiple Linear Regression model, chosen for its interpretability and e
 1. Clone the repository:
    ```sh
    git clone https://github.com/Maxime-Bakunzi/linear_regression_model
-   cd linear_regression_model/API
+   cd linear_regression_model/summative/API
    ```
 
 2. Set up a virtual environment:
@@ -100,13 +100,11 @@ We use a Multiple Linear Regression model, chosen for its interpretability and e
    uvicorn prediction:app --reload
    ```
 
-5. Deploy to Render following their [Python deployment guide](https://render.com/docs/deploy-python-app).
-
 ### Frontend Setup
 
 1. Navigate to the frontend directory:
    ```sh
-   cd linear_regression_model/salary_predictor
+   cd linear_regression_model/summative/salary_predictor
    ```
 
 2. Install Flutter dependencies:
