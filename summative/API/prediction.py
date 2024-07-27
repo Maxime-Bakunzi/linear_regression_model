@@ -22,6 +22,7 @@ def predict(data: EmployeeData):
     ]])
 
     prediction = model.predict(input_data)
+    print(f"Prediction: {prediction[0]}")
     return {'prediction': prediction[0]}
 
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'screens/screen1.dart';
-import 'screens/screen2.dart';
+import 'screens/homescreen.dart';
+import 'screens/predictscreen.dart';
 
 void main() {
   runApp(MyApp());
@@ -10,14 +10,16 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Salary Prediction App',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primaryColor: Color(0xdb050523),
+        visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: Screen1(),
+      home: HomeScreen(),
       routes: {
-        '/screen1': (context) => Screen1(),
-        '/screen2': (context) => Screen2(),
+        '/home': (context) => HomeScreen(),
+        '/predict': (context) => PredictScreen(),
       },
     );
   }
